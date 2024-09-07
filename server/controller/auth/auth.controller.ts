@@ -9,6 +9,8 @@ export class AuthController extends BaseController {
     this.authService = new AuthService();
     this.register = this.register.bind(this);
     this.login = this.login.bind(this);
+    this.googleAuth = this.googleAuth.bind(this);
+    this.googleCallback = this.googleCallback.bind(this);
   }
 
   async register(req: Request, res: Response) {
@@ -41,6 +43,34 @@ export class AuthController extends BaseController {
       const data = this._filterSensitiveData(result);
 
       return this._sendResponse(res, "User logged in successfully", 200, {
+        data,
+      });
+    } catch (error: any) {
+      return this._sendError(res, error.message);
+    }
+  }
+
+  async googleAuth(req: Request, res: Response) {
+    try {
+      const authUrl = await this.authService.getGoogleAuthUrl();
+      return res.redirect(authUrl);
+    } catch (error: any) {
+      return this._sendError(res, error.message);
+    }
+  }
+
+  async googleCallback(req: Request, res: Response) {
+    try {
+      const { code } = req.query;
+
+      if (!code || typeof code !== "string") {
+        return this._sendError(res, "Invalid authorization code");
+      }
+
+      const result = await this.authService.handleGoogleCallback(code);
+      const data = this._filterSensitiveData(result);
+
+      return this._sendResponse(res, "User authenticated successfully", 200, {
         data,
       });
     } catch (error: any) {
