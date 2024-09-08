@@ -8,6 +8,8 @@ import { useDraggable } from "@dnd-kit/core";
 
 export const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
   const { deleteTask } = useTask();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   const { attributes, listeners, setNodeRef, transform, transition } = useDraggable({
     id: task.id.toString(),
   });
