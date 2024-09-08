@@ -16,6 +16,10 @@ export class TaskService {
     return this.prisma.task.findMany({ where: { userId } });
   }
 
+  async getSingleTask(taskId: number, userId: number) {
+    return this.prisma.task.findFirst({ where: { id: taskId, userId } });
+  }
+
   async createTask(
     userId: number,
     title: string,
