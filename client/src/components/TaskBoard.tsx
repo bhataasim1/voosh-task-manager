@@ -1,10 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { DndContext, useDroppable, DragEndEvent } from "@dnd-kit/core";
 import { Task } from "../types/types";
 import { TaskCard } from "./TaskCard";
 import { useTask } from "../hooks/useTask";
@@ -16,31 +11,19 @@ export const TaskBoard: React.FC = () => {
     fetchTasks();
   }, [fetchTasks]);
 
-  useEffect(() => {
-    // console.log("Tasks updated in TaskBoard:", tasks);
-  }, [tasks]);
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
 
-  const onDragEnd = (result: DropResult) => {
-    const { destination, source, draggableId } = result;
-    console.log(destination, source, draggableId);
-
-    if (!destination) {
-      return;
-    }
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    const task = tasks.find((t) => t.id === parseInt(draggableId));
-    if (task) {
-      updateTask(task.id, {
-        status: destination.droppableId as Task["status"],
-      });
-      fetchTasks();
+    if (active.id !== over?.id) {
+      const taskId = parseInt(active.id as string, 10);
+      const newStatus = over?.id as Task["status"];
+      if (newStatus) {
+        const task = tasks.find((t) => t.id === taskId);
+        if (task) {
+          updateTask(task.id, { status: newStatus });
+          fetchTasks();
+        }
+      }
     }
   };
 
@@ -51,45 +34,48 @@ export const TaskBoard: React.FC = () => {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex flex-wrap -mx-2 mt-8">
+    <DndContext onDragEnd={handleDragEnd}>
+      <div className="flex space-x-4 mt-8">
         {Object.entries(columns).map(([status, tasks]) => (
-          <div
-            key={status}
-            className="w-full sm:w-1/3 px-2 mb-4" // Full width on small screens, 1/3 width on larger screens
-          >
-            <h2 className="text-xl font-bold mb-4">{status}</h2>
-            <Droppable droppableId={status}>
-              {(provided) => (
-                <div
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  className="bg-gray-100 p-4 rounded min-h-[500px]"
-                >
-                  {tasks.map((task, index) => (
-                    <Draggable
-                      key={task.id}
-                      draggableId={task.id.toString()}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        >
-                          <TaskCard task={task} />
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </div>
+          <DroppableColumn key={status} status={status as Task["status"]}>
+            {tasks.map((task) => (
+              <TaskCard key={task.id} task={task} />
+            ))}
+          </DroppableColumn>
         ))}
       </div>
-    </DragDropContext>
+    </DndContext>
+  );
+};
+
+const DroppableColumn: React.FC<{
+  status: Task["status"];
+  children: React.ReactNode;
+}> = ({ status, children }) => {
+  const { setNodeRef } = useDroppable({
+    id: status,
+  });
+
+  const getStatusStyles = (status: Task["status"]) => {
+    switch (status) {
+      case "TODO":
+        return "bg-blue-100 border-blue-300 text-blue-800";
+      case "IN_PROGRESS":
+        return "bg-yellow-100 border-yellow-300 text-yellow-800";
+      case "DONE":
+        return "bg-green-100 border-green-300 text-green-800";
+      default:
+        return "";
+    }
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      className={`flex-1 border rounded-lg p-4 min-h-[500px] ${getStatusStyles(status)}`}
+    >
+      <h2 className="text-xl font-bold mb-4">{status}</h2>
+      <div>{children}</div>
+    </div>
   );
 };
