@@ -23,7 +23,7 @@ const ViewDetailsTaskDialog = ({ task }: ViewDetailsTaskDialogProps) => {
           View Details
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-lg mx-auto p-4">
         <DialogHeader>
           <DialogTitle>Task Details</DialogTitle>
           <DialogDescription>
