@@ -52,9 +52,12 @@ export const TaskBoard: React.FC = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex justify-between mt-8">
+      <div className="flex flex-wrap -mx-2 mt-8">
         {Object.entries(columns).map(([status, tasks]) => (
-          <div key={status} className="w-1/3 px-2">
+          <div
+            key={status}
+            className="w-full sm:w-1/3 px-2 mb-4" // Full width on small screens, 1/3 width on larger screens
+          >
             <h2 className="text-xl font-bold mb-4">{status}</h2>
             <Droppable droppableId={status}>
               {(provided) => (
