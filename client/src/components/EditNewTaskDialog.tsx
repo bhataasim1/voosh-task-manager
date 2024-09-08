@@ -10,19 +10,23 @@ import {
 import { Button } from "./ui/button";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useState } from "react";
-// import { useTask } from "@/hooks/useTask";
+import { useTask } from "@/hooks/useTask";
+import { Task } from "@/types/types";
 
-const EditNewTaskDialog = ({ taskId }: { taskId: number }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  // const { createTask } = useTask();
+interface EditNewTaskDialogProps {
+  task: Task;
+}
+
+const EditNewTaskDialog = ({ task }: EditNewTaskDialogProps) => {
+  const [title, setTitle] = useState(task.title);
+  const [description, setDescription] = useState(task.description);
+  const { updateTask } = useTask();
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      console.log("Update Task", taskId);
-      // await createTask({ title, description, status: "TODO" });
+      await updateTask(task.id, { title, description });
       setTitle("");
       setDescription("");
     } catch (error) {
