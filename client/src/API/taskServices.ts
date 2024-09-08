@@ -9,7 +9,7 @@ interface ApiResponse<T> {
   error?: string;
 }
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000";
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://voosh-task-manager-1.onrender.com";
 
 export class TaskServices {
   private backendUrl: string;
@@ -18,7 +18,7 @@ export class TaskServices {
   constructor() {
     this.backendUrl = BACKEND_URL
       ? `${BACKEND_URL}/api/task`
-      : "http://localhost:3000/api/task";
+      : "https://voosh-task-manager-1.onrender.com/api/task";
   }
 
   private async handleResponse<T>(
