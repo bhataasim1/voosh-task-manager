@@ -8,7 +8,7 @@
     "start": "node dist/index.js",
     "prisma": "npx prisma init",
     "migrate": "npx prisma generate; npx prisma migrate dev --name init",
-    "build": "rimraf dist && tsc"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "Bhat Aasim",
