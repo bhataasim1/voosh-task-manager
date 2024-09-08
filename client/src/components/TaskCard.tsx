@@ -3,6 +3,7 @@ import { useTask } from "../hooks/useTask";
 import { Task } from "../types/types";
 import { Button } from "./ui/button";
 import EditNewTaskDialog from "./EditNewTaskDialog";
+import ViewDetailsTaskDialog from "./ViewDetailsTaskDialog";
 
 interface TaskCardProps {
   task: Task;
@@ -20,14 +21,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         <Button onClick={() => deleteTask(task.id)} variant={"destructive"}>
           Delete
         </Button>
-        <EditNewTaskDialog taskId={task.id} />
-        <Button
-          // onClick={() => deleteTask(task.id)}
-          variant={"default"}
-          className="text-white bg-blue-500 hover:bg-blue-700"
-        >
-          View Details
-        </Button>
+        <EditNewTaskDialog task={task} />
+        <ViewDetailsTaskDialog task={task} />
       </div>
     </div>
   );
