@@ -13,22 +13,29 @@ export const useTask = () => {
     setTasks(response.data.tasks);
   }, []);
 
-  const createTask = useCallback(async (task: Omit<Task, "id" | "createdAt">) => {
-    const response = await taskService.createTask(task);
-    setTasks((prevTasks) => [...prevTasks, response.data]);
-  }, []);
+  const createTask = useCallback(
+    async (task: Omit<Task, "id" | "createdAt">) => {
+      await taskService.createTask(task);
+      fetchTasks();
+    },
+    [fetchTasks]
+  );
 
-  const updateTask = useCallback(async (id: number, task: Partial<Task>) => {
-    const response = await taskService.updateTask(id, task);
-    setTasks((prevTasks) =>
-      prevTasks.map((t) => (t.id === id ? response.data : t))
-    );
-  }, []);
+  const updateTask = useCallback(
+    async (id: number, task: Partial<Task>) => {
+      await taskService.updateTask(id, task);
+      fetchTasks();
+    },
+    [fetchTasks]
+  );
 
-  const deleteTask = useCallback(async (id: number) => {
-    await taskService.deleteTask(id);
-    setTasks((prevTasks) => prevTasks.filter((t) => t.id !== id));
-  }, []);
+  const deleteTask = useCallback(
+    async (id: number) => {
+      await taskService.deleteTask(id);
+      fetchTasks();
+    },
+    [fetchTasks]
+  );
 
   return { tasks, fetchTasks, createTask, updateTask, deleteTask };
 };
