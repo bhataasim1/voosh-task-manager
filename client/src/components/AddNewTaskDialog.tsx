@@ -34,48 +34,46 @@ const AddNewTaskDialog = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="text-white bg-blue-500 border rounded-md px-2 py-1 hover:bg-blue-800">
+        <Button className="text-white bg-blue-500 border rounded-md px-4 py-2 hover:bg-blue-800">
           Add Task
         </Button>
       </DialogTrigger>
-      <form onSubmit={handleSubmit} className="mb-8">
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add Task</DialogTitle>
-            <DialogDescription>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Task title"
-                className="w-full px-3 py-2 border rounded mb-2"
-                required
-              />
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Task description"
-                className="w-full px-3 py-2 border rounded mb-2"
-              />
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose>
-              <Button
-                variant={"outline"}
-                className="m-2"
-                onClick={() => handleSubmit()}
-                disabled={loading}
-              >
-                Add Task
-              </Button>
-              <Button variant={"destructive"} className="m-2">
-                Cancel
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </form>
+      <DialogContent className="max-w-lg mx-auto p-4">
+        <DialogHeader>
+          <DialogTitle>Add Task</DialogTitle>
+          <DialogDescription>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Task title"
+              className="w-full px-3 py-2 border rounded mb-2"
+              required
+            />
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Task description"
+              className="w-full px-3 py-2 border rounded mb-2"
+            />
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose>
+            <Button
+              variant={"outline"}
+              className="m-2"
+              onClick={() => handleSubmit()}
+              disabled={loading}
+            >
+              Add Task
+            </Button>
+            <Button variant={"destructive"} className="m-2">
+              Cancel
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 };
