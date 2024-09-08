@@ -5,7 +5,7 @@ import AuthOutlet from "@auth-kit/react-router/AuthOutlet";
 import RootLayout from "./layout/RootLayout";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
-import { TaskBoard } from "./components/TaskBoard";
+import Dashboard from "./pages/Dashboard";
 
 const store = createStore({
   authName: "voosh_auth_token",
@@ -39,7 +39,7 @@ const AppRoutes = () => {
             path="/dashboard"
             element={
               <RootLayout>
-                <TaskBoard />
+                <Dashboard />
               </RootLayout>
             }
           />
