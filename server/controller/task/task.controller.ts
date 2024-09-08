@@ -8,6 +8,7 @@ export class TaskController extends BaseController {
     super();
     this.taskService = new TaskService();
     this.getAllTasks = this.getAllTasks.bind(this);
+    this.getSingleTask = this.getSingleTask.bind(this);
     this.createTask = this.createTask.bind(this);
     this.updateTask = this.updateTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
@@ -19,6 +20,24 @@ export class TaskController extends BaseController {
       const tasks = await this.taskService.getAllTasks(userId);
       return this._sendResponse(res, "Tasks fetched successfully", 200, {
         tasks,
+      });
+    } catch (error: any) {
+      return this._sendError(res, error.message);
+    }
+  }
+
+  async getSingleTask(req: Request, res: Response) {
+    try {
+      const userId = (req as any).userId;
+      const taskId = parseInt(req.params.id);
+      const task = await this.taskService.getSingleTask(taskId, userId);
+
+      if (!task) {
+        return this._sendResponse(res, "No Task found", 404, {});
+      }
+
+      return this._sendResponse(res, "Task fetched successfully", 200, {
+        task,
       });
     } catch (error: any) {
       return this._sendError(res, error.message);
