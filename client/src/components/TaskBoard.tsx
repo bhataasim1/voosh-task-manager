@@ -10,14 +10,19 @@ import { TaskCard } from "./TaskCard";
 import { useTask } from "../hooks/useTask";
 
 export const TaskBoard: React.FC = () => {
-  const { tasks, fetchTasks, updateTask } = useTask();
+  const { fetchTasks, updateTask, tasks } = useTask();
 
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
 
+  useEffect(() => {
+    // console.log("Tasks updated in TaskBoard:", tasks);
+  }, [tasks]);
+
   const onDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
+    console.log(destination, source, draggableId);
 
     if (!destination) {
       return;
@@ -35,6 +40,7 @@ export const TaskBoard: React.FC = () => {
       updateTask(task.id, {
         status: destination.droppableId as Task["status"],
       });
+      fetchTasks();
     }
   };
 
