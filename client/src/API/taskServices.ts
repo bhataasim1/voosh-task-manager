@@ -61,6 +61,18 @@ export class TaskServices {
     return this.fetchJson<any>(`${this.backendUrl}`, options);
   }
 
+  async getSingleTask(taskId: number): Promise<ApiResponse<any>> {
+    const options: AxiosRequestConfig = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: this.token,
+      },
+    };
+
+    return this.fetchJson<any>(`${this.backendUrl}/${taskId}`, options);
+  }
+
   async createTask(data: any): Promise<ApiResponse<any>> {
     const options: AxiosRequestConfig = {
       method: "POST",
@@ -83,8 +95,8 @@ export class TaskServices {
       headers: {
         "Content-Type": "application/json",
         Authorization: this.token,
-        data: JSON.stringify(task),
       },
+      data: JSON.stringify(task),
     };
 
     return this.fetchJson<any>(
