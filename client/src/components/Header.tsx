@@ -36,7 +36,7 @@ export const Header: React.FC = () => {
               <Link to="/" className="mr-4">
                 Login
               </Link>
-              <Link to="/signup" className="bg-green-500 px-3 py-1 rounded">
+              <Link to="/register" className="bg-green-500 px-3 py-1 rounded">
                 Signup
               </Link>
             </>
