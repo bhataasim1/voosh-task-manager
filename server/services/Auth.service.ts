@@ -21,7 +21,7 @@ export class AuthService {
     );
   }
   async register(email: string, password: string, name: string) {
-    const existingUser = await this.prisma.user.findUnique({
+    const existingUser = await this.prisma.user.findFirst({
       where: { email },
     });
     if (existingUser) {
@@ -40,7 +40,7 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    const user = await this.prisma.user.findUnique({ where: { email } });
+    const user = await this.prisma.user.findFirst({ where: { email } });
     if (!user) {
       throw new Error("Invalid credentials");
     }
